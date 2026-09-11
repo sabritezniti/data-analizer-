@@ -3,6 +3,8 @@ from flask_cors import CORS
 import os
 import subprocess
 import json
+from models import Document, AIModel, DocumentProcessor, PDFDocument
+from rel.path import get_data_path, create_data_dir
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +19,7 @@ def upload_file():
         return jsonify({'error': 'No selected file'}), 400
 
     if file:
-        file.save(os.path.join('uploads', file.filename))
+        file.save(os.path.join(get_data_path(), 'uploads', file.filename))
         return jsonify({'message': 'File uploaded successfully'}), 200
 
 @app.route('/analyze', methods=['POST'])
@@ -30,8 +32,8 @@ def analyze_file():
         return jsonify({'error': 'No selected file'}), 400
 
     if file:
-        file.save(os.path.join('uploads', file.filename))
-        result = subprocess.run(['python', 'analyze.py', os.path.join('uploads', file.filename)], capture_output=True, text=True)
+        file.save(os.path.join(get_data_path(), 'uploads', file.filename))
+        result = subprocess.run(['python', 'analyze.py', os.path.join(get_data_path(), 'uploads', file.filename)], capture_output=True, text=True)
         return jsonify({'result': result.stdout}), 200
 
 if __name__ == '__main__':
