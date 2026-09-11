@@ -43,3 +43,7 @@ SUMMARY_LENGTHS = ["short", "medium", "detailed"]
 
 # Define the supported languages
 SUPPORTED_LANGUAGES = ["ar", "en"]
+
+# Define the Streamlit app directory
+STREAMLIT_APP_DIR = BASE_DIR / "streamlit_app"
+STREAMLIT_APP_DIR.mkdir(exist_ok=True)
